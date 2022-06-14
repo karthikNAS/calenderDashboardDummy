@@ -31,36 +31,6 @@ import {
 
 import { data } from './MockData';
 import CalendarStrip from 'react-native-calendar-strip';
-// const data = [
-//   {
-//     date: moment().add(0,'d'),
-//     name: '1',
-//   },
-//   {
-//     date: moment().add(1,'d'),
-//     name: '2',
-//   },
-//   {
-//     date: moment().add(2,'d'),
-//     name: '3',
-//   },
-//   {
-//     date: moment().add(3,'d'),
-//     name: '4',
-//   },
-//   {
-//     date: moment().add(4,'d'),
-//     name: '5',
-//   },
-//   {
-//     date: moment().add(5,'d'),
-//     name: '6',
-//   },
-//   {
-//     date: moment().add(6,'d'),
-//     name: new Date().getDay(),
-//   },
-// ]
 export default function App() {
   const list1Ref = useRef();
   const [selectedDate, setDate] = useState(new Date());
@@ -84,7 +54,9 @@ export default function App() {
     })
     if (temp > -1) {
       setdisplayArray(fileteredArray);
-      list1Ref.current.scrollToIndex({index:temp});
+      setTimeout(() => {
+        list1Ref.current.scrollToIndex({index:temp});
+      }, 0);
     }
     else setdisplayArray([])
   }
@@ -95,6 +67,14 @@ export default function App() {
     setDate(tempDate);
     // console.log(tempDate,'fl view items ===>',props);
   })
+
+  function renderEmpty() {
+      return (<Center flex={1}>
+        <Text color={'gray.400'} fontSize={14} p={6}>
+          No orders for the day
+        </Text>
+      </Center>)
+  }
 
 
   return (
@@ -113,22 +93,6 @@ export default function App() {
             startingDate={moment('10-06-2022', 'dd-mm-yyyy')}
             onDateSelected={onPress}
           />
-          {/* <FlatList
-          
-            horizontal
-            data={array}
-            renderItem={({ item, index }) => {
-              const date = moment(item?.date).format('Do [\n]MMM')
-              return (
-                <Pressable onPress={()=>onPress(item)} w={100} h={100} alignItems={'center'} justifyContent={'center'} bg={'pink.100'} mr={2}>
-                  <Text color={index==selectedIndex ? 'red.400':'black'}>{date}</Text>
-                </Pressable>
-              )
-            }}
-            getItemLayout={(data, index) => (
-              {length: 108, offset: 108 * index, index}
-            )}
-          /> */}
         </Flex>
         <Center bg={'#FFF'} flex={1} py={1}>
           <FlatList
@@ -148,6 +112,7 @@ export default function App() {
             getItemLayout={(data, index) => (
               { length: 102, offset: 102 * index, index }
             )}
+            ListEmptyComponent={renderEmpty}
           />
         </Center>
       </Box>
